@@ -1,0 +1,61 @@
+---
+title: "Final Project Report"
+author: "Oscar Su"
+date: "2025-05-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
+# Background Research
+
+# Research Question
+
+# Experiment Design
+
+# Results
+
+```{r}
+df <- read.csv("cleaned_results.csv")
+
+model <- aov(Difference.in.Time ~ Music.Genre+Gender+Division, data = df)
+summary(model)
+```
+
+Post-hoc test to see which level is causing a difference
+```{r}
+# Post-hoc test
+TukeyHSD(model)
+
+# visualization
+ggplot(df, aes(x = Music.Genre, y = Difference.in.Time, fill = Music.Genre)) +
+  geom_boxplot() +
+  labs(
+    title = "Effect of Music Genre on Difference in Time",
+    x = "Music Genre",
+    y = "Difference in Time"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+# Discussion
+
+Residual assumptions
+```{r}
+par(mfrow=c(1, 2))
+res <- residuals(model)
+fit <- fitted(model)
+plot(fit, res, main = "Residuals vs Fitted", xlab = "Fitted Values", ylab = "Residuals")
+abline(h = 0, col = "red")
+
+qqnorm(res, main = "Normal Q-Q Plot")
+qqline(res, col = "blue")
+```
